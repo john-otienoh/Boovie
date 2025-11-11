@@ -1,24 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Register</h1>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Register</button>
+{% extends "base.html" %}
+
+{% block title %}Register - Movie Reservation{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center">
+  <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">Register</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_username" class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" id="id_username" placeholder="Enter username" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="id_email" class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" id="id_email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="id_password" class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" id="id_password" placeholder="Enter password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Register</button>
     </form>
-    <p>Already have an account<a href="{% url 'login' %}">click here</a></p>
-    {% if messages %}
-        {% for message in messages %}
-            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-</body>
-</html>
+    <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+  </div>
+</div>
+{% endblock %}
+

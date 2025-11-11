@@ -60,9 +60,9 @@ def verify_otp(request, user_id):
 
 
 def login_view(request):
-    # if request.user.is_authenticated:
-    #     messages.info(request, "You are already logged in.")
-    #     return redirect('profile')
+    if request.user.is_authenticated:
+        # messages.info(request, "You are already logged in.")
+        return redirect('profile')
     
     if request.method == "POST":
         form = EmailAuthenticationForm(request, data=request.POST)

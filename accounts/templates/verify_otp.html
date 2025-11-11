@@ -1,25 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Verify OTP</h1>
-    {% if messages %}
-        {% for message in messages %}
-            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="email_otp" placeholder="Email OTP" required>
-        <button type="submit">Verify OTP</button>
+{% extends "base.html" %}
+
+{% block title %}Verify OTP - Movie Reservation{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center">
+  <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">Verify OTP</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_email_otp" class="form-label">Enter OTP</label>
+        <input type="text" name="email_otp" class="form-control" id="id_email_otp" placeholder="Enter the OTP" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
     </form>
-    <p>Didn’t receive the code?
-        <a href="{% url 'resend_otp' user.id %}">Resend OTP</a>
+    <p class="text-center mt-3">
+      Didn’t receive the code? <a href="{% url 'resend_otp' user.id %}">Resend OTP</a>
     </p>
-    
-</body>
-</html>
+  </div>
+</div>
+{% endblock %}
