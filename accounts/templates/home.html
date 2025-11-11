@@ -6,6 +6,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Successful login</h1>
+    {% if user.is_authenticated %}
+        <h2>Welcome, {{ request.user.username }}!</h2>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+    {% endif %}
 </body>
 </html>

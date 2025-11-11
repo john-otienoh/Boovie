@@ -132,3 +132,5 @@ EMAIL_HOST_USER = 'your_email@gmail.com'
 EMAIL_HOST_PASSWORD = 'your_email_password'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'

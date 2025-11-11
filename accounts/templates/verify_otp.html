@@ -7,15 +7,19 @@
 </head>
 <body>
     <h1>Verify OTP</h1>
-    {% if error %}
-        <div class="alert alert-danger" role="alert">
-          {{ error }}
-        </div>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
     {% endif %}
     <form method="post">
         {% csrf_token %}
         <input type="text" name="email_otp" placeholder="Email OTP" required>
         <button type="submit">Verify OTP</button>
     </form>
+    <p>Didn’t receive the code?
+        <a href="{% url 'resend_otp' user.id %}">Resend OTP</a>
+    </p>
+    
 </body>
 </html>

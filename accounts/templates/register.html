@@ -14,5 +14,11 @@
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Register</button>
     </form>
+    <p>Already have an account<a href="{% url 'login' %}">click here</a></p>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
 </body>
 </html>
