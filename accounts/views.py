@@ -34,7 +34,7 @@ def register(request):
         send_otp(user)
         messages.info(request, "An OTP has been sent to your email.")
         return redirect('verify_otp', user_id=user.id)
-    return render(request, 'register.html')
+    return render(request, 'accounts/register.html')
 
 def verify_otp(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -59,7 +59,7 @@ def verify_otp(request, user_id):
             messages.error(request, "Invalid OTP. Please try again.")
 
             # return render(request, 'verify_otp.html', {'error': 'Invalid OTP'})
-    return render(request, 'verify_otp.html', {'user': user})
+    return render(request, 'accounts/verify_otp.html', {'user': user})
 
 
 
@@ -94,7 +94,7 @@ def login_view(request):
     else:
         form = EmailAuthenticationForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'accounts/login.html', {'form': form})
 
 def resend_otp(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -114,7 +114,7 @@ def resend_otp(request, user_id):
 
 @login_required
 def profile(request):
-    return render(request, "profile.html")
+    return render(request, "accounts/profile.html")
 
 @login_required
 def logout_view(request):
@@ -153,7 +153,7 @@ def forgot_password(request):
         )
         messages.success(request, 'Password reset link sent to your email.')
         return redirect('login')
-    return render(request, "forgot_password.html")
+    return render(request, "accounts/forgot_password.html")
 
 
 def reset_password(request, uidb64, token):
@@ -175,7 +175,7 @@ def reset_password(request, uidb64, token):
                 return redirect('login')
             else:
                 messages.error(request, "Passwords do not match.")
-        return render(request, 'reset_password.html')
+        return render(request, 'accounts/reset_password.html')
     else:
         messages.error(request, "Invalid or expired reset link")
         return redirect('forgot_password')
