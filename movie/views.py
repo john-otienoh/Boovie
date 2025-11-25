@@ -3,13 +3,10 @@ from django.db.models import Q
 from .models import Movie
 
 # Create your views here.
-def list(request):
-    movies = Movie.objects.all()
-    return render(request, 'list.html', {"movies": movies})
 
-def detail(request):
-    movie = get_object_or_404(Movie, id=id)
-    return render(request, "detail.html", {"movie": movie})
+def detail(request, slug):
+    movie = get_object_or_404(Movie, slug=slug)
+    return render(request, "movie/detail.html", {"movie": movie})
 
 def search(request):
     if request.method == 'POST':
@@ -18,6 +15,11 @@ def search(request):
             Q(title__icontains=query) | Q(description__icontains=query)
         )
         return render(
-            request, "search.html", {"query": query, "movie_results": movie_results}
+            request, "movie/search.html", {"query": query, "movies": movie_results}
         )
-    return render(request, "search.html")
+    return render(request, "movie/search.html")
+
+
+def home(request):
+    movies = Movie.objects.all()
+    return render(request, 'home.html', {"movies": movies})

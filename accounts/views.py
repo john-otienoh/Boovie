@@ -123,9 +123,6 @@ def logout_view(request):
     messages.info(request, "You have been logged out successfully.")
     return redirect('login')
 
-def home(request):
-    return render(request, 'home.html')
-
 
 def forgot_password(request):
     if request.method == 'POST':

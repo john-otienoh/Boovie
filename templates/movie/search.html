@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static }
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+
+{% if query %}
+    <h3 class="mb-3">Searching for: <span class="fw-semibold">"{{ query }}"</span></h3>
+
+    {% if movies %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for movie in movies %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    {% if movie.poster_image %}
+                    <img src="{{ movie.poster_image.url }}" class="card-img-top" alt="{{ movie.title }}">
+                    {% else %}
+                    <img src="https://placehold.co/400x600?text=No+Image" class="card-img-top" alt="No poster">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie.title }}</h5>
+                        <p class="card-text text-truncate">{{ movie.description }}</p>
+                        <p class="mb-1">
+                            <span class="badge bg-primary">{{ movie.status|title }}</span>
+                            <span class="badge bg-secondary">{{ movie.age_rating }}</span>
+                        </p>
+                        <a href="{{ movie.get_absolute_url }}" class="btn btn-outline-primary btn-sm mt-2">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            No movies found for your query "{{ query }}".
+        </div>
+    {% endif %}
+
+{% else %}
+    <div class="alert alert-warning" role="alert">
+        Please enter a search query.
+        <a class="alert-link" href="{% url 'movie:home' %}">Go back to Home</a>.
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -23,6 +23,13 @@ class Movie(models.Model):
         ('18+', 'Adults Only'),
     ]
 
+    # GENRE = [
+    #     ("action", "Action"),
+    #     ("adventutre", "Adventure"),
+    #     ("comedy", "Comedy"),
+    #     ("drama", "Drama"),
+    # ]
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     slug = models.SlugField(max_length=255, blank=True, unique=True)
@@ -44,7 +51,7 @@ class Movie(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('detail', args=[self.slug])
+        return reverse('movie:detail', kwargs={'slug': self.slug})
     
     def save(self, *args, **kwargs):
         if not self.slug:

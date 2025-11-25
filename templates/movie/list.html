@@ -1,0 +1,31 @@
+{% block content %}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for movie in movies %}
+    <a href="{{ movie.get_absolute_url }}">
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+        {% comment %}
+          {% if movie.poster %}
+            <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }}">
+          {% else %}
+            <img src="https://via.placeholder.com/300x450?text=No+Image" class="card-img-top" alt="No Image">
+          {% endif %}
+        {% endcomment %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ movie.title }}</h5>
+            <p class="card-text text-truncate">{{ movie.description }}</p>
+            <p class="mt-auto"><strong>Genre:</strong>    
+                {% for genre in movie.genre.all %}
+                    {{ genre.name }}
+                {% endfor %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </a>
+    {% empty %}
+      <p class="text-center">No movies are available at the moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -18,6 +18,7 @@ class MovieAdmin(admin.ModelAdmin):
     search_fields = ["title", "language", "description"]
     ordering = ["-created_at"]
 
+
     prepopulated_fields = {"slug": ("title",)}
 
     readonly_fields = ("created_at", "updated_at")
