@@ -1,7 +1,7 @@
 {% block content %}
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for movie in movies %}
+    {% for movie in page_obj %}
     <a href="{{ movie.get_absolute_url }}">
       <div class="col">
         <div class="card h-100 shadow-sm">

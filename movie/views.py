@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from .models import Genre, Movie
 
@@ -14,9 +15,22 @@ def search(request):
         movie_results = Movie.objects.filter(
             Q(title__icontains=query) | Q(description__icontains=query)
         )
-        return render(
-            request, "movie/search.html", {"query": query, "movies": movie_results}
-        )
+        paginator = Paginator(movie_results, 6)
+        page_number = request.GET.get('page')
+
+        try:
+            page_obj = paginator.get_page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.get_page(1)
+        except EmptyPage:
+            page_obj = paginator.get_page(paginator.num_pages)
+
+        context = {
+            'query': query,
+            'page_obj': page_obj,
+        }
+        return render(request, "movie/search.html", context)
+    
     return render(request, "movie/search.html")
 
 
@@ -57,8 +71,17 @@ def home(request):
     age_ratings = [choice[0] for choice in Movie.AGE_RATINGS]
     statuses = [choice[0] for choice in Movie.STATUS_CHOICES]
 
+    paginator = Paginator(movies, 6)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.get_page(1)
+    except EmptyPage:
+        page_obj = paginator.get_page(paginator.num_pages)
+
     context = {
-        'movies': movies,
+        # 'movies': movies,
         'genres': genres,
         'languages': languages,
         'age_ratings': age_ratings,
@@ -68,6 +91,9 @@ def home(request):
         'selected_language': language or '',
         'selected_age_rating': age_rating or '',
         'selected_sort': sort_by or '',
+        'page_obj': page_obj,
+        'paginator': paginator,
+        'query_params': request.GET.copy(),
     }
 
     return render(request, 'home.html', context)

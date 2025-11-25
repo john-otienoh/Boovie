@@ -5,7 +5,9 @@
 {% block content %}
 <div class="container my-3">
     <form class="row g-2 align-items-end" method="get" action="{% url 'movie:home' %}">
-        <div class="col-12 col-sm-6 col-md-3">
+
+        <!-- Status -->
+        <div class="col-12 col-sm-6 col-md-2">
             <label class="form-label visually-hidden" for="status">Status</label>
             <select class="form-select" id="status" name="status">
                 <option value="">All Status</option>
@@ -15,7 +17,8 @@
             </select>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-3">
+        <!-- Genre -->
+        <div class="col-12 col-sm-6 col-md-2">
             <label class="form-label visually-hidden" for="genre">Genre</label>
             <select class="form-select" id="genre" name="genre">
                 <option value="">All Genres</option>
@@ -25,7 +28,8 @@
             </select>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-3">
+        <!-- Language -->
+        <div class="col-12 col-sm-6 col-md-2">
             <label class="form-label visually-hidden" for="language">Language</label>
             <select class="form-select" id="language" name="language">
                 <option value="">All Languages</option>
@@ -35,50 +39,42 @@
             </select>
         </div>
 
-        <!-- Age Rating + Buttons on the same line -->
-        <div class="col-12 col-sm-6 col-md-3 d-flex align-items-end">
-            <div class="flex-grow-1 me-2">
-                <label class="form-label visually-hidden" for="age_rating">Age Rating</label>
-                <select class="form-select" id="age_rating" name="age_rating">
-                    <option value="">All Ratings</option>
-                    {% for rating in age_ratings %}
-                        <option value="{{ rating }}" {% if rating == selected_age_rating %}selected{% endif %}>{{ rating }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="d-flex">
-                <button type="submit" class="btn btn-primary me-2">Apply</button>
-                <a href="{% url 'movie:home' %}" class="btn btn-secondary">Reset</a>
-            </div>
+        <!-- Age Rating -->
+        <div class="col-12 col-sm-6 col-md-2">
+            <label class="form-label visually-hidden" for="age_rating">Age Rating</label>
+            <select class="form-select" id="age_rating" name="age_rating">
+                <option value="">All Ratings</option>
+                {% for rating in age_ratings %}
+                    <option value="{{ rating }}" {% if rating == selected_age_rating %}selected{% endif %}>{{ rating }}</option>
+                {% endfor %}
+            </select>
         </div>
+
+        <!-- Sort -->
+        <div class="col-12 col-sm-6 col-md-2">
+            <label class="form-label visually-hidden" for="sort_by">Sort By</label>
+            <select class="form-select" id="sort_by" name="sort_by">
+                <option value="">Sort By</option>
+                <option value="title_asc" {% if selected_sort == 'title_asc' %}selected{% endif %}>Title (A → Z)</option>
+                <option value="title_desc" {% if selected_sort == 'title_desc' %}selected{% endif %}>Title (Z → A)</option>
+                <option value="release_asc" {% if selected_sort == 'release_asc' %}selected{% endif %}>Release Date (Old → New)</option>
+                <option value="release_desc" {% if selected_sort == 'release_desc' %}selected{% endif %}>Release Date (New → Old)</option>
+                <option value="duration_asc" {% if selected_sort == 'duration_asc' %}selected{% endif %}>Duration (Short → Long)</option>
+                <option value="duration_desc" {% if selected_sort == 'duration_desc' %}selected{% endif %}>Duration (Long → Short)</option>
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-12 col-sm-6 col-md-2 d-flex mt-2 mt-md-0">
+            <button type="submit" class="btn btn-primary me-2 flex-grow-1">Apply</button>
+            <a href="{% url 'movie:home' %}" class="btn btn-secondary flex-grow-1">Reset</a>
+        </div>
+
     </form>
 </div>
 
-<form class="d-flex flex-wrap align-items-center mb-4" method="get" action="{% url 'movie:home' %}">
-
-    <!-- Sort Dropdown -->
-    <div class="me-2 flex-grow-1" style="min-width: 200px;">
-        <label class="form-label visually-hidden" for="sort_by">Sort</label>
-        <select class="form-select" id="sort_by" name="sort_by">
-            <option value="">Sort By</option>
-            <option value="title_asc" {% if selected_sort == 'title_asc' %}selected{% endif %}>Title (A → Z)</option>
-            <option value="title_desc" {% if selected_sort == 'title_desc' %}selected{% endif %}>Title (Z → A)</option>
-            <option value="release_asc" {% if selected_sort == 'release_asc' %}selected{% endif %}>Release Date (Old → New)</option>
-            <option value="release_desc" {% if selected_sort == 'release_desc' %}selected{% endif %}>Release Date (New → Old)</option>
-            <option value="duration_asc" {% if selected_sort == 'duration_asc' %}selected{% endif %}>Duration (Short → Long)</option>
-            <option value="duration_desc" {% if selected_sort == 'duration_desc' %}selected{% endif %}>Duration (Long → Short)</option>
-        </select>
-    </div>
-
-    <!-- Buttons -->
-    <div class="d-flex flex-wrap mt-2 mt-md-0">
-        <button type="submit" class="btn btn-primary me-2">Apply</button>
-        <a href="{% url 'movie:home' %}" class="btn btn-secondary">Reset</a>
-    </div>
-
-</form>
-
-  
 <h2 class="mb-4 text-center">Now Showing</h2>
 {% include "movie/list.html" %}
+</br>
+{% include "movie/pagination.html" %}
 {% endblock %}
