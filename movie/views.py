@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from .models import Movie
+from .models import Genre, Movie
 
 # Create your views here.
 
@@ -21,5 +21,53 @@ def search(request):
 
 
 def home(request):
+    status = request.GET.get('status')
+    genre_id = request.GET.get('genre')
+    language = request.GET.get('language')
+    age_rating = request.GET.get('age_rating')
+
     movies = Movie.objects.all()
-    return render(request, 'home.html', {"movies": movies})
+    if status:
+        movies = movies.filter(status=status)
+    if genre_id:
+        movies = movies.filter(genre__id=genre_id)
+    if language:
+        movies = movies.filter(language__iexact=language)
+    if age_rating:
+        movies = movies.filter(age_rating=age_rating)
+
+    sort_by = request.GET.get('sort_by')
+    if sort_by == 'title_asc':
+        movies = movies.order_by('title')
+    elif sort_by == 'title_desc':
+        movies = movies.order_by('-title')
+    elif sort_by == 'release_asc':
+        movies = movies.order_by('release_date')
+    elif sort_by == 'release_desc':
+        movies = movies.order_by('-release_date')
+    elif sort_by == 'duration_asc':
+        movies = movies.order_by('duration')
+    elif sort_by == 'duration_desc':
+        movies = movies.order_by('-duration')
+    else:
+        movies = movies.order_by('-created_at') 
+
+    genres = Genre.objects.all()
+    languages = Movie.objects.values_list('language', flat=True).distinct()
+    age_ratings = [choice[0] for choice in Movie.AGE_RATINGS]
+    statuses = [choice[0] for choice in Movie.STATUS_CHOICES]
+
+    context = {
+        'movies': movies,
+        'genres': genres,
+        'languages': languages,
+        'age_ratings': age_ratings,
+        'statuses': statuses,
+        'selected_status': status or '',
+        'selected_genre': genres or '',
+        'selected_language': language or '',
+        'selected_age_rating': age_rating or '',
+        'selected_sort': sort_by or '',
+    }
+
+    return render(request, 'home.html', context)
